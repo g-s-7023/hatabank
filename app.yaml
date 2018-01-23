@@ -1,0 +1,20 @@
+runtime: go
+api_version: go1
+
+handlers:
+- url: /css
+  static_dir: css
+
+- url: /user/.*
+  script: _go_app
+  login: admin
+  auth_fail_action: redirect
+
+- url: /
+  script: _go_app
+
+- url: /logout
+  script: _go_app
+
+- url: /dologout
+  script: _go_app

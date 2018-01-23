@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>trial for html template</title>
+    <link rel="stylesheet" type="text/css" href="/css/hatabank.css">
+    <script type="text/javascript">
+        var dateBefore = "";
+        // 選択されたとき、dateの値を取得する関数
+        // dateが空なら何もしない
+        function getDate(obj) {
+            if (obj.value === ""){
+                if (dateBefore !== ""){
+                    obj.value = dateBefore;
+                }
+            }
+        }
+        // 値が変わったとき、dateの値を保存する関数
+        function setDate(obj){
+            dateBefore = obj.value;
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <nav class="header">
+        <ul id="control">
+            <form action="/user/doexpense" method="post" id="input_post">
+                <input class="inputbutton_circle" type="submit" value="登録">
+            </form>
+        </ul>
+        <ul class="tile" id="move">
+            <li><a href="/user/list">一覧</a></li>
+            <li><a href="/user/income">収入</a></li>
+            <li><a href="/user/expense">支出</a></li>
+            <li><a href="/user/summary">まとめ</a></li>
+            <li><a href="/dologout">ログアウト</a></li>
+        </ul>
+    </nav>
+    <main class="contents_input">
+      <h3>支出画面</h3>
+      {{if eq .HasAnyError true}}
+      <h4>入力値に誤りがあります</h4>
+      {{end}}
+        <table class="kakeibo_inputlist">
+            <tr>
+                <th>日付</th>
+                <th>メモ</th>
+                <th>金額</th>
+                <th></th>
+            </tr>
+            {{$line := .Lines}}
+            {{range $i:= $line}}
+            <tr>
+                <td><input form="input_post" id="input_date" type="date" name="Date" value="{{index $.Date $i}}" onclick="getDate(this)" onchange="setDate(this)"></td>
+                <td><input form="input_post" id="input_detail" type="text" name="Detail" value={{index $.Detail $i}}></td>
+                <td><input form="input_post" id="input_price" type="number" name="Price" value={{index $.Price $i}}></td>
+                <td>{{if eq (index $.HasError $i) true}}・{{end}}</td>
+            </tr>
+            {{end}}
+        </table>
+    </main>
+</div>
+</body>
+</html>

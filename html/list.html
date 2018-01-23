@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>trial for html template</title>
+    <link rel="stylesheet" type="text/css" href="/css/hatabank.css">
+</head>
+<script type="text/javascript">
+    function showSelectedMonth(obj) {
+        // formオブジェクトを作成
+        var form = document.createElement("Form");
+        // 作ったformオブジェクトの属性値を設定
+        form.action = "/user/list";
+        form.method = "get";
+        // 作ったformオブジェクトを表示しない指定
+        form.style.display = "none";
+        // 作ったformオブジェクトをbodyに追加
+        document.body.appendChild(form);
+        // もらったinputオブジェクトを作ったformに追加
+        form.appendChild(obj);
+        // formの送信
+        form.submit();
+    }
+</script>
+<body>
+<div class="container">
+    <nav class="header">
+        <ul id="control">
+            <li>
+                <input class="box" id="select_month" type="month" name="selected_month" value="{{.Year}}-{{.Month}}" onchange="showSelectedMonth(this)">
+            </li>
+        </ul>
+        <ul class="tile" id="move">
+            <li><a href="/user/list">一覧</a></li>
+            <li><a href="/user/income">収入</a></li>
+            <li><a href="/user/expense">支出</a></li>
+            <li><a href="/user/summary">まとめ</a></li>
+            <li><a href="/dologout">ログアウト</a></li>
+        </ul>
+    </nav>
+    <main class="contents_input">
+        <table class="kakeibolist">
+            <tr>
+                <th class="kakeibolist_date">日付</th>
+                <th class="kakeibolist_category">費目</th>
+                <th class="kakeibolist_category">支払者</th>
+                <th class="kakeibolist_detail">詳細</th>
+                <th class="kakeibolist_priceheader">金額</th>
+                <th></th>
+                <th></th>
+            </tr>
+        {{range .EntryToShow}}
+            <tr>
+                <td class="kakeibolist_date">{{.Year}}/{{.Month}}/{{.Day}} {{.DayOfWeek}}</td>
+                <td class="kakeibolist_category">{{.Type}}</td>
+                <td class="kakeibolist_category">{{.Payer}}</td>
+                <td class="kakeibolist_detail">{{.Detail}}</td>
+                <td class="kakeibolist_price">{{.Price}}</td>
+                <!-- hiddenで変更ページにsubmitさせる -->
+                <form action="/user/dodelete" method="post">
+                    <input type="hidden" name="ID" value={{.DatastoreId}}>
+                    <input type="hidden" name="DateBefore" value={{.Year}}-{{.Month}}-{{.Day}}>
+                    <td><input class="button_minicircle" type="submit" value="✖"></td>
+                </form>
+            </tr>
+        {{end}}
+        </table>
+    </main>
+</div>
+</body>
+</html>
