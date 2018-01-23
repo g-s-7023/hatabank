@@ -150,13 +150,14 @@ h4{
     width: 120px;
 }
 .kakeibolist_priceheader{
-    text-align: left;
-    width: 90px;
+    text-align: right;
+    width: 70px;
+    padding-right: 40px;
 }
 
 .kakeibolist_price{
     text-align: right;
-    width: 50px;
+    width: 70px;
     padding-right: 40px;
 }
 
